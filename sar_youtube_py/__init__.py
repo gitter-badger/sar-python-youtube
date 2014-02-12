@@ -99,17 +99,19 @@ class SarYouTube:
             request = requests.post(self.api_url + api_path, kwargs, headers=headers)
         else:
             request = requests.get(self.api_url + api_path + '?' + urllib.urlencode(kwargs), headers=headers)
+            print(self.api_url + api_path + '?' + urllib.urlencode(kwargs))
 
         response = json.loads(request.content)
-        if 'error' in response and response['error'] == 'invalid_grant' and self.refresh_token:
-            self.refresh_token()
-            return self.api(api_path, kwargs)
+
+        if 'error' in response and response['error']['code'] == 401 and self.refresh_token:
+            self.refresh_access_token()
+            return self.api(api_path, **kwargs)
 
         return self.check_request(request)
 
-    def refresh_access_token(self, refresh_token):
+    def refresh_access_token(self):
         data = {
-            'refresh_token': self.auth_token,
+            'refresh_token': self.refresh_token,
             'client_id': self.client_id,
             'client_secret': self.client_secret,
             'grant_type': 'refresh_token'
@@ -123,13 +125,13 @@ class SarYouTube:
         """
             Checks for status code, is status code is other than 200, throws an exception
         """
-        if request.status_code != 200:
+        if request and request.status_code != 200:
             response = json.loads(request.content)
             raise Exception('Request is not successful, status code : ' + str(request.status_code) + ', Error : ' +
                             response['error'])
-        else:
+        elif request:
             json_object = request.json()
-            if 'refresh_token' in json_object:
-                self.set_access_token(json_object['refresh_token'])
+            if 'access_token' in json_object:
+                self.set_access_token(json_object['access_token'])
 
             return json_object
