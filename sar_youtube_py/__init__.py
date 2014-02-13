@@ -99,7 +99,6 @@ class SarYouTube:
             request = requests.post(self.api_url + api_path, kwargs, headers=headers)
         else:
             request = requests.get(self.api_url + api_path + '?' + urllib.urlencode(kwargs), headers=headers)
-            print(self.api_url + api_path + '?' + urllib.urlencode(kwargs))
 
         response = json.loads(request.content)
 
