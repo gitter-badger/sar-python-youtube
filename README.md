@@ -13,6 +13,10 @@ youtube = SarYouTube(
 )
 
 
+
+
+youtube.set_auth_token(request.values.get('code'))
+
 tokens = youtube.get_access_token()
 
 youtube.set_access_token(tokens['access_token'])
