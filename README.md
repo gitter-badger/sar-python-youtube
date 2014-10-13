@@ -1,5 +1,6 @@
 Mini Python lib for YouTube Data API
 ==================
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/pROCKrammer/sar-python-youtube?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Easy to use :
 
